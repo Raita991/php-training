@@ -6,7 +6,7 @@
 
 try {
     
-        newEntry($_POST);  
+        sendToDatabase($_POST);  
     
 } catch (PDOException $PDOException) {
     echo 'Impossible de se connecter à la base de données';
@@ -15,7 +15,7 @@ try {
 
 
 /* FUNCTION */
-function newEntry() {
+function sendToDatabase() {
     $dsn = 'mysql:host=localhost;dbname=ca_poupette';
     $pdo = new PDO($dsn, 'root','');
     $montant = $_POST['devise'];
