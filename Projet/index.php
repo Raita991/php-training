@@ -17,49 +17,53 @@
         <h1>Suivi du chiffre d'affaire</h1>
       </div>
     </div>
-    <div class="row content1">
-      <div class="title pink">
-      <h2>Nouvelle(s) entréée(s)</h2>
-      </div>
-      <div class="input-group mb-3">
-        <select class="form-select" aria-label="Default select example" id="month">
-          <option selected>Selectionner le mois</option>
-          <option value="1">Janvier</option>
-          <option value="2">Fevrier</option>
-          <option value="3">Mars</option>
-          <option value="4">Avril</option>
-          <option value="5">Mai</option>
-          <option value="6">Juin</option>
-          <option value="7">Juillet</option>
-          <option value="8">Aôut</option>
-          <option value="9">Septembre</option>
-          <option value="10">Octobre</option>
-          <option value="11">Novembre</option>
-          <option value="12">Decembre</option>
-        </select>
-        <select class="form-select" aria-label="Default select example" id="source">
-          <option selected>Source du CA</option>
-          <option value="1">Scolaire</option>
-          <option value="2">Studio</option>
-          <option value="3">Autres</option>
-        </select>
-      </div>
-      <div class="mb-3 number">
-        <label for="basic-url" class="form-label">Nouveau montant</label>
+    <form method="POST" action="back.php">
+      <div class="row content1">
+        <div class="title pink">
+        <h2>Nouvelle(s) entrée(s)</h2>
+        </div>
         <div class="input-group mb-3">
-          <input type="text" class="form-control" id="amount">
+          <select class="form-select" aria-label="Default select example" id="month" name="newMounth">
+            <option selected>Selectionner le mois</option>
+            <option value="1">Janvier</option>
+            <option value="2">Fevrier</option>
+            <option value="3">Mars</option>
+            <option value="4">Avril</option>
+            <option value="5">Mai</option>
+            <option value="6">Juin</option>
+            <option value="7">Juillet</option>
+            <option value="8">Aôut</option>
+            <option value="9">Septembre</option>
+            <option value="10">Octobre</option>
+            <option value="11">Novembre</option>
+            <option value="12">Decembre</option>
+          </select>
+          <select class="form-select" aria-label="Default select example" id="source" name="newSource">
+            <option selected>Source du CA</option>
+            <option value="1">Scolaire</option>
+            <option value="2">Studio</option>
+            <option value="3">Autres</option>
+          </select>
+        </div>
+      
+        <div class="mb-3 number">
+          <label for="basic-url" class="form-label">Nouveau montant</label>
+          <div class="input-group mb-3">
+            <input type="number" name="devise" class="form-control" id="amount">
+            <span class="input-group-text">€</span>
+          </div>
+          <label for="new number" class="form-label" name="title">Chiffre du mois en cours</label>
+          <div class="input-group mb-3">
+          <input type="text" class="form-control" id="exampleFormControlInput1" id="monthSelect">
           <span class="input-group-text">€</span>
+          </div>
         </div>
-        <label for="new number" class="form-label">Chiffre du mois en cours</label>
-        <div class="input-group mb-3">
-        <input type="text" class="form-control" id="exampleFormControlInput1" id="monthSelect">
-        <span class="input-group-text">€</span>
-        </div>
+      
       </div>
-    </div>
-    <div class="d-grid">
-      <button class="btn btn-danger" type="submit" id="button">Envoyer</button>
-    </div>
+      <div class="d-grid">
+        <button class="btn btn-danger" type="submit" id="button">Envoyer</button>
+      </div>
+    </form>
     <div class="row content">
       <div class="title pink">
         <h2>Récapitulatif de l'année</h2>
