@@ -49,7 +49,7 @@
         <div class="mb-3 number">
           <label for="basic-url" class="form-label">Nouveau montant</label>
           <div class="input-group mb-3">
-            <input type="number" name="devise" class="form-control" id="amount">
+            <input type="number" name="devise" class="form-control" id="amount" step=".01">
             <span class="input-group-text">€</span>
           </div>
           <label for="new number" class="form-label" name="title">Chiffre du mois en cours</label>
@@ -58,131 +58,159 @@
           <span class="input-group-text">€</span>
           </div>
         </div>
-      
       </div>
+      
+  
       <div class="d-grid">
         <button class="btn btn-danger" type="submit" id="button">Envoyer</button>
       </div>
     </form>
-    <div class="row content">
-      <div class="title pink">
-        <h2>Récapitulatif de l'année</h2>
-      </div>
-      <div class="summary">
-        <table class="table" id="myTable">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Mois</th>
-              <th scope="col">CA scolaire</th>
-              <th scope="col">CA Studio</th>
-              <th scope="col">Autres</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>Janvier</td>
-              <td id="turnoverOfJanuaryOfSchool"></td>
-              <td id="turnoverOfJanuaryOfStudio"></td>
-              <td id="turnoverOfJanuaryOfOther"></td>
-            </tr>
-            <tr>
-              <th scope="row">2</th>
-              <td>Fevrier</td>
-              <td id="turnoverOfFebruaryOfSchool"></td>
-              <td id="turnoverOfFebruaryOfStudio"></td>
-              <td id="turnoverOfFebruaryOfOther"></td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td>Mars</td>
-              <td id="turnoverOfMarchOfSchool"></td>
-              <td id="turnoverOfMarchOfStudio"></td>
-              <td id="turnoverOfMarchOfOther"></td>
-            </tr>
-            <tr>
-              <th scope="row">4</th>
-              <td>Avril</td>
-              <td id="turnoverOfAprilOfSchool"></td>
-              <td id="turnoverOfAprilOfStudio"></td>
-              <td id="turnoverOfAprilOfOther"></td>
-            </tr>
-            <tr>
-              <th scope="row">5</th>
-              <td>Mai</td>
-              <td id="turnoverOfMayOfSchool"></td>
-              <td id="turnoverOfMayOfStudio"></td>
-              <td id="turnoverOfMayOfOther"></td>
-            </tr>
-            <tr>
-              <th scope="row">6</th>
-              <td>Juin</td>
-              <td id="turnoverOfJuneOfSchool"></td>
-              <td id="turnoverOfJuneOfStudio"></td>
-              <td id="turnoverOfJuneOfOther"></td>
-            </tr>
-            <tr>
-              <th scope="row">7</th>
-              <td>Juillet</td>
-              <td id="turnoverOfJuilyOfSchool"></td>
-              <td id="turnoverOfJuilyOfStudio"></td>
-              <td id="turnoverOfJuilyOfOther"></td>
-            </tr>
-            <tr>
-              <th scope="row">8</th>
-              <td>Aôut</td>
-              <td id="turnoverOfAugustOfSchool"></td>
-              <td id="turnoverOfAugustOfStudio"></td>
-              <td id="turnoverOfAugustOfOther"></td>
-            </tr>
-            <tr>
-              <th scope="row">9</th>
-              <td>Septembre</td>
-              <td id="turnoverOfSeptemberOfSchool"></td>
-              <td id="turnoverOfSeptemberOfStudio"></td>
-              <td id="turnoverOfSeptemberOfOther"></td>
-            </tr>
-            <tr>
-              <th scope="row">10</th>
-              <td>Octobre</td>
-              <td id="turnoverOfOctoberOfSchool"></td>
-              <td id="turnoverOfOctoberOfStudio"></td>
-              <td id="turnoverOfOctoberOfOther"></td>
-            </tr>
-            <tr>
-              <th scope="row">11</th>
-              <td>Novembre</td>
-              <td id="turnoverOfNovemberOfSchool"></td>
-              <td id="turnoverOfNovemberOfStudio"></td>
-              <td id="turnoverOfNovemberOfOther"></td>
-            </tr>
-            <tr>
-              <th scope="row">12</th>
-              <td>Decembre</td>
-              <td id="turnoverOfDecemberOfSchool"></td>
-              <td id="turnoverOfDecemberOfStudio"></td>
-              <td id="turnoverOfDecemberOfOther"></td>
-            </tr>
-            <tr>
-              <th scope="row">Total</th>
-              <td>-----------</td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-            <tr>
-              <th scope="row">Total des totaux</th>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td colspan="4"></td>
-            </tr>
-          </tbody>
-        </table>
-        </div>
-    </div>
   </div>
+
+  <?php
+
+function refreshTable() {
+
+  $dsn = 'mysql:host=localhost;dbname=ca_poupette';
+  $pdo = new PDO($dsn, 'root','');
+  foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 1)
+    AND (monuthOfprice = 1)', PDO::FETCH_ASSOC) as $number) {
+    var_dump($number);
+    $priceJanSco = $number['SUM(price)'];
+    echo"
+    <div class=\"row content\">
+    
+    <div class=\"title pink\">
+    
+      <h2>Récapitulatif de l'année</h2>
+    </div>
+    <div class=\"summary\">
+      <table class=\"table\" id=\"myTable\">
+        <thead>
+          <tr>
+            <th scope=\"col\">#</th>
+            <th scope=\"col\">Mois</th>
+            <th scope=\"col\">CA scolaire</th>
+            <th scope=\"col\">CA Studio</th>
+            <th scope=\"col\">Autres</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope=\"row\">1</th>
+            <td>Janvier</td>
+            <td id=\"turnoverOfJanuaryOfSchool\">$priceJanSco.€</td>
+            <td id=\"turnoverOfJanuaryOfStudio\"></td>
+            <td id=\"turnoverOfJanuaryOfOther\"></td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+  </div>
+</div>
+    ";
+
+    }
+}
+refreshTable();
+
+
+
+?>
+
   <script src="script.js"></script>
-</body>
-</html>
+  </body>
+  </html>
+
+<!--
+  <tr>
+            <th scope="row">2</th>
+            <td>Fevrier</td>
+            <td id="turnoverOfFebruaryOfSchool"></td>
+            <td id="turnoverOfFebruaryOfStudio"></td>
+            <td id="turnoverOfFebruaryOfOther"></td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <td>Mars</td>
+            <td id="turnoverOfMarchOfSchool"></td>
+            <td id="turnoverOfMarchOfStudio"></td>
+            <td id="turnoverOfMarchOfOther"></td>
+          </tr>
+          <tr>
+            <th scope="row">4</th>
+            <td>Avril</td>
+            <td id="turnoverOfAprilOfSchool"></td>
+            <td id="turnoverOfAprilOfStudio"></td>
+            <td id="turnoverOfAprilOfOther"></td>
+          </tr>
+          <tr>
+            <th scope="row">5</th>
+            <td>Mai</td>
+            <td id="turnoverOfMayOfSchool"></td>
+            <td id="turnoverOfMayOfStudio"></td>
+            <td id="turnoverOfMayOfOther"></td>
+          </tr>
+          <tr>
+            <th scope="row">6</th>
+            <td>Juin</td>
+            <td id="turnoverOfJuneOfSchool"></td>
+            <td id="turnoverOfJuneOfStudio"></td>
+            <td id="turnoverOfJuneOfOther"></td>
+          </tr>
+          <tr>
+            <th scope="row">7</th>
+            <td>Juillet</td>
+            <td id="turnoverOfJuilyOfSchool"></td>
+            <td id="turnoverOfJuilyOfStudio"></td>
+            <td id="turnoverOfJuilyOfOther"></td>
+          </tr>
+          <tr>
+            <th scope="row">8</th>
+            <td>Aôut</td>
+            <td id="turnoverOfAugustOfSchool"></td>
+            <td id="turnoverOfAugustOfStudio"></td>
+            <td id="turnoverOfAugustOfOther"></td>
+          </tr>
+          <tr>
+            <th scope="row">9</th>
+            <td>Septembre</td>
+            <td id="turnoverOfSeptemberOfSchool"></td>
+            <td id="turnoverOfSeptemberOfStudio"></td>
+            <td id="turnoverOfSeptemberOfOther"></td>
+          </tr>
+          <tr>
+            <th scope="row">10</th>
+            <td>Octobre</td>
+            <td id="turnoverOfOctoberOfSchool"></td>
+            <td id="turnoverOfOctoberOfStudio"></td>
+            <td id="turnoverOfOctoberOfOther"></td>
+          </tr>
+          <tr>
+            <th scope="row">11</th>
+            <td>Novembre</td>
+            <td id="turnoverOfNovemberOfSchool"></td>
+            <td id="turnoverOfNovemberOfStudio"></td>
+            <td id="turnoverOfNovemberOfOther"></td>
+          </tr>
+          <tr>
+            <th scope="row">12</th>
+            <td>Decembre</td>
+            <td id="turnoverOfDecemberOfSchool"></td>
+            <td id="turnoverOfDecemberOfStudio"></td>
+            <td id="turnoverOfDecemberOfOther"></td>
+          </tr>
+          <tr>
+            <th scope="row">Total</th>
+            <td>-----------</td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <th scope="row">Total des totaux</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td colspan="4"></td>
+          </tr>
