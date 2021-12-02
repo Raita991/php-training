@@ -75,8 +75,12 @@ function refreshTable() {
   $pdo = new PDO($dsn, 'root','');
   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 1)
     AND (monuthOfprice = 1)', PDO::FETCH_ASSOC) as $number) {
-    var_dump($number);
     $priceJanSco = $number['SUM(price)'];
+    }
+  foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 2)
+  AND (monuthOfprice = 1)', PDO::FETCH_ASSOC) as $number) {
+    $priceJanStu = $number['SUM(price)'];
+   }
     echo"
     <div class=\"row content\">
     
@@ -100,7 +104,7 @@ function refreshTable() {
             <th scope=\"row\">1</th>
             <td>Janvier</td>
             <td id=\"turnoverOfJanuaryOfSchool\">$priceJanSco.€</td>
-            <td id=\"turnoverOfJanuaryOfStudio\"></td>
+            <td id=\"turnoverOfJanuaryOfStudio\">$priceJanStu.€</td>
             <td id=\"turnoverOfJanuaryOfOther\"></td>
           </tr>
         </tbody>
@@ -110,7 +114,7 @@ function refreshTable() {
 </div>
     ";
 
-    }
+    
 }
 refreshTable();
 
