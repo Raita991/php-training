@@ -42,7 +42,7 @@ function sendToDatabase() {
     $montant = $_POST['devise'];
     $mounth =  $_POST['newMounth'];
     $source = $_POST['newSource'];
-    $statement = $pdo->prepare('INSERT INTO turnover(price, typeOfPrice, monuthOfPrice) VALUES (:montant, :source, :mounth)');
+    $statement = $pdo->prepare('INSERT INTO turnover(price, typeOfPrice, monthOfPrice) VALUES (:montant, :source, :mounth)');
     $statement->bindParam(':montant', $montant);
     $statement->bindParam(':source', $source);
     $statement->bindParam(':mounth', $mounth);
