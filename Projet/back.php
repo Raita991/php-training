@@ -1,3 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+    <title>Back</title>
+</head>
+<body>
+    
+</body>
+</html>
+
+
+
+
+
 <?php
 
 
@@ -8,7 +27,7 @@ try {
         
         sendToDatabase($_POST); 
 
-        echo'<br><a href="http://localhost/exo&projet/projet/index.php"><button>Retourner à la page précédente </button></a>';
+        echo'<br><a href="http://localhost/exo&projet/projet/index.php"><button type="btn btn-danger">Retourner à la page précédente </button></a>';
     
 } catch (PDOException $PDOException) {
     echo 'Impossible de se connecter à la base de données';
@@ -23,7 +42,6 @@ function sendToDatabase() {
     $montant = $_POST['devise'];
     $mounth =  $_POST['newMounth'];
     $source = $_POST['newSource'];
-    var_dump($montant, $mounth, $source);
     $statement = $pdo->prepare('INSERT INTO experimental(price, typeOfPrice, monuthOfPrice) VALUES (:montant, :source, :mounth)');
     $statement->bindParam(':montant', $montant);
     $statement->bindParam(':source', $source);

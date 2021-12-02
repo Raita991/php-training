@@ -52,12 +52,12 @@
             <input type="number" name="devise" class="form-control" id="amount" step=".01">
             <span class="input-group-text">€</span>
           </div>
-          <label for="new number" class="form-label" name="title">Chiffre du mois en cours</label>
+          <!--<label for="new number" class="form-label" name="title">Chiffre du mois en cours</label>
           <div class="input-group mb-3">
           <input type="text" class="form-control" id="exampleFormControlInput1" id="monthSelect">
           <span class="input-group-text">€</span>
           </div>
-        </div>
+        </div>-->
       </div>
       
   
@@ -81,6 +81,152 @@ function refreshTable() {
   AND (monuthOfprice = 1)', PDO::FETCH_ASSOC) as $number) {
     $priceJanStu = $number['SUM(price)'];
    }
+   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 3)
+  AND (monuthOfprice = 1)', PDO::FETCH_ASSOC) as $number) {
+    $priceJanOt = $number['SUM(price)'];
+   }
+   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 1)
+  AND (monuthOfprice = 2)', PDO::FETCH_ASSOC) as $number) {
+    $priceFebSco = $number['SUM(price)'];
+   }
+   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 2)
+  AND (monuthOfprice = 2)', PDO::FETCH_ASSOC) as $number) {
+    $priceFebStu = $number['SUM(price)'];
+   }
+   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 3)
+  AND (monuthOfprice = 2)', PDO::FETCH_ASSOC) as $number) {
+    $priceFebOt = $number['SUM(price)'];
+   }
+   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 1)
+  AND (monuthOfprice = 3)', PDO::FETCH_ASSOC) as $number) {
+    $priceMarSco = $number['SUM(price)'];
+   }
+   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 2)
+  AND (monuthOfprice = 3)', PDO::FETCH_ASSOC) as $number) {
+    $priceMarStu = $number['SUM(price)'];
+   }
+   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 3)
+  AND (monuthOfprice = 3)', PDO::FETCH_ASSOC) as $number) {
+    $priceMarOt = $number['SUM(price)'];
+   }
+   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 1)
+  AND (monuthOfprice = 4)', PDO::FETCH_ASSOC) as $number) {
+    $priceAprSco = $number['SUM(price)'];
+   }
+   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 2)
+  AND (monuthOfprice = 4)', PDO::FETCH_ASSOC) as $number) {
+    $priceAprStu = $number['SUM(price)'];
+   }
+   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 3)
+  AND (monuthOfprice = 4)', PDO::FETCH_ASSOC) as $number) {
+    $priceAprOt = $number['SUM(price)'];
+   }
+   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 1)
+  AND (monuthOfprice = 5)', PDO::FETCH_ASSOC) as $number) {
+    $priceMaySco = $number['SUM(price)'];
+   }
+   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 2)
+  AND (monuthOfprice = 5)', PDO::FETCH_ASSOC) as $number) {
+    $priceMayStu = $number['SUM(price)'];
+   }
+   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 3)
+   AND (monuthOfprice = 5)', PDO::FETCH_ASSOC) as $number) {
+     $priceMayOt = $number['SUM(price)'];
+    }
+    foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 1)
+  AND (monuthOfprice = 6)', PDO::FETCH_ASSOC) as $number) {
+    $priceJunSco = $number['SUM(price)'];
+   }
+   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 2)
+  AND (monuthOfprice = 6)', PDO::FETCH_ASSOC) as $number) {
+    $priceJunStu = $number['SUM(price)'];
+   }
+   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 3)
+  AND (monuthOfprice = 6)', PDO::FETCH_ASSOC) as $number) {
+    $priceJunOt = $number['SUM(price)'];
+   }
+   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 1)
+  AND (monuthOfprice = 7)', PDO::FETCH_ASSOC) as $number) {
+    $priceJuiSco = $number['SUM(price)'];
+   }
+   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 2)
+  AND (monuthOfprice = 7)', PDO::FETCH_ASSOC) as $number) {
+    $priceJuiStu = $number['SUM(price)'];
+   }
+   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 3)
+  AND (monuthOfprice = 7)', PDO::FETCH_ASSOC) as $number) {
+    $priceJuiOt = $number['SUM(price)'];
+   }
+   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 1)
+  AND (monuthOfprice = 8)', PDO::FETCH_ASSOC) as $number) {
+    $priceAugSco = $number['SUM(price)'];
+   }
+   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 2)
+  AND (monuthOfprice = 8)', PDO::FETCH_ASSOC) as $number) {
+    $priceAugStu = $number['SUM(price)'];
+   }
+   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 3)
+  AND (monuthOfprice = 8)', PDO::FETCH_ASSOC) as $number) {
+    $priceAugOt = $number['SUM(price)'];
+   }
+   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 1)
+  AND (monuthOfprice = 9)', PDO::FETCH_ASSOC) as $number) {
+    $priceSepSco = $number['SUM(price)'];
+   }
+   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 2)
+  AND (monuthOfprice = 9)', PDO::FETCH_ASSOC) as $number) {
+    $priceSepStu = $number['SUM(price)'];
+   }
+   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 3)
+  AND (monuthOfprice = 9)', PDO::FETCH_ASSOC) as $number) {
+    $priceSepOt = $number['SUM(price)'];
+   }
+   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 1)
+  AND (monuthOfprice = 10)', PDO::FETCH_ASSOC) as $number) {
+    $priceOctSco = $number['SUM(price)'];
+   }
+   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 2)
+  AND (monuthOfprice = 10)', PDO::FETCH_ASSOC) as $number) {
+    $priceOctStu = $number['SUM(price)'];
+   }
+   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 3)
+  AND (monuthOfprice = 10)', PDO::FETCH_ASSOC) as $number) {
+    $priceOctOt = $number['SUM(price)'];
+   }
+   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 1)
+  AND (monuthOfprice = 11)', PDO::FETCH_ASSOC) as $number) {
+    $priceNovSco = $number['SUM(price)'];
+   }
+   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 2)
+  AND (monuthOfprice = 11)', PDO::FETCH_ASSOC) as $number) {
+    $priceNovStu = $number['SUM(price)'];
+   }
+   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 3)
+  AND (monuthOfprice = 11)', PDO::FETCH_ASSOC) as $number) {
+    $priceNovOt = $number['SUM(price)'];
+   }
+   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 1)
+  AND (monuthOfprice = 12)', PDO::FETCH_ASSOC) as $number) {
+    $priceDecSco = $number['SUM(price)'];
+   }
+   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 2)
+  AND (monuthOfprice = 12)', PDO::FETCH_ASSOC) as $number) {
+    $priceDecStu = $number['SUM(price)'];
+   }
+   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 3)
+  AND (monuthOfprice = 12)', PDO::FETCH_ASSOC) as $number) {
+    $priceDecOt = $number['SUM(price)'];
+   }
+   $totalOfSco = $priceJanSco + $priceFebSco + $priceMarSco + $priceAprSco + $priceMaySco + $priceJunSco + $priceJuiSco + $priceAugSco
+   + $priceSepSco + $priceOctSco + $priceNovSco + $priceDecSco;
+
+   $totalOfStu = $priceJanStu + $priceFebStu + $priceMarStu + $priceAprStu + $priceMayStu + $priceJunStu + $priceJuiStu + $priceAugStu
+   + $priceSepStu + $priceOctStu + $priceNovStu + $priceDecStu;
+
+   $totalOfOt = $priceJanOt + $priceFebOt + $priceMarOt + $priceAprOt + $priceMayOt + $priceJunOt + $priceJuiOt + $priceAugOt
+   + $priceSepOt + $priceOctOt + $priceNovOt + $priceDecOt;
+
+   $OneForAll = $totalOfStu + $totalOfSco + $totalOfOt;
     echo"
     <div class=\"row content\">
     
@@ -105,7 +251,98 @@ function refreshTable() {
             <td>Janvier</td>
             <td id=\"turnoverOfJanuaryOfSchool\">$priceJanSco.€</td>
             <td id=\"turnoverOfJanuaryOfStudio\">$priceJanStu.€</td>
-            <td id=\"turnoverOfJanuaryOfOther\"></td>
+            <td id=\"turnoverOfJanuaryOfOther\">$priceJanOt.€</td>
+          </tr>
+          <tr>
+            <th scope=\"row\">2</th>
+            <td>Fevrier</td>
+            <td id=\"turnoverOfFebruaryOfSchool\">$priceFebSco.€</td>
+            <td id=\"turnoverOfFebruaryOfStudio\">$priceFebStu.€</td>
+            <td id=\"turnoverOfFebruaryOfOther\">$priceFebOt.€</td>
+          </tr>
+          <tr>
+            <th scope=\"row\">3</th>
+            <td>Mars</td>
+            <td id=\"turnoverOfMarchOfSchool\">$priceMarSco.€</td>
+            <td id=\"turnoverOfMarchOfStudio\">$priceMarStu.€</td>
+            <td id=\"turnoverOfMarchOfOther\">$priceMarOt.€</td>
+          </tr>
+          <tr>
+            <th scope=\"row\">4</th>
+            <td>Avril</td>
+            <td id=\"turnoverOfAprilOfSchool\">$priceAprSco.€</td>
+            <td id=\"turnoverOfAprilOfStudio\">$priceAprStu.€</td>
+            <td id=\"turnoverOfAprilOfOther\">$priceAprOt.€</td>
+          </tr>
+          <tr>
+            <th scope=\"row\">5</th>
+            <td>Mai</td>
+            <td id=\"turnoverOfMayOfSchool\">$priceMaySco.€</td>
+            <td id=\"turnoverOfMayOfStudio\">$priceMayStu.€</td>
+            <td id=\"turnoverOfMayOfOther\">$priceMayOt.€</td>
+          </tr>
+          <tr>
+            <th scope=\"row\">6</th>
+            <td>Juin</td>
+            <td id=\"turnoverOfJuneOfSchool\">$priceJunSco.€</td>
+            <td id=\"turnoverOfJuneOfStudio\">$priceJunStu.€</td>
+            <td id=\"turnoverOfJuneOfOther\">$priceJunOt.€</td>
+          </tr>
+          <tr>
+            <th scope=\"row\">7</th>
+            <td>Juillet</td>
+            <td id=\"turnoverOfJuilyOfSchool\">$priceJuiSco.€</td>
+            <td id=\"turnoverOfJuilyOfStudio\">$priceJuiStu.€</td>
+            <td id=\"turnoverOfJuilyOfOther\">$priceJuiOt.€</td>
+          </tr>
+          <tr>
+            <th scope=\"row\">8</th>
+            <td>Aôut</td>
+            <td id=\"turnoverOfAugustOfSchool\">$priceAugSco.€</td>
+            <td id=\"turnoverOfAugustOfStudio\">$priceAugStu.€</td>
+            <td id=\"turnoverOfAugustOfOther\">$priceAugOt.€</td>
+          </tr>
+          <tr>
+            <th scope=\"row\">9</th>
+            <td>Septembre</td>
+            <td id=\"turnoverOfSeptemberOfSchool\">$priceSepSco.€</td>
+            <td id=\"turnoverOfSeptemberOfStudio\">$priceSepStu.€</td>
+            <td id=\"turnoverOfSeptemberOfOther\">$priceSepOt.€</td>
+          </tr>
+          <tr>
+            <th scope=\"row\">10</th>
+            <td>Octobre</td>
+            <td id=\"turnoverOfOctoberOfSchool\">$priceOctSco.€</td>
+            <td id=\"turnoverOfOctoberOfStudio\">$priceOctStu.€</td>
+            <td id=\"turnoverOfOctoberOfOther\">$priceOctOt.€</td>
+          </tr>
+          <tr>
+            <th scope=\"row\">11</th>
+            <td>Novembre</td>
+            <td id=\"turnoverOfNovemberOfSchool\">$priceNovSco.€</td>
+            <td id=\"turnoverOfNovemberOfStudio\">$priceNovStu.€</td>
+            <td id=\"turnoverOfNovemberOfOther\">$priceNovOt.€</td>
+          </tr>
+          <tr>
+            <th scope=\"row\">12</th>
+            <td>Decembre</td>
+            <td id=\"turnoverOfDecemberOfSchool\">$priceDecSco.€</td>
+            <td id=\"turnoverOfDecemberOfStudio\">$priceDecStu.€</td>
+            <td id=\"turnoverOfDecemberOfOther\">$priceDecOt.€</td>
+          </tr>
+          <tr>
+            <th scope=\"row\">Total</th>
+            <td>-----------</td>
+            <td>$totalOfSco.€</td>
+            <td>$totalOfStu.€</td>
+            <td>$totalOfOt.€</td>
+          </tr>
+          <tr>
+            <th scope=\"row\">Total des totaux</th>
+            <td>$OneForAll.€</td>
+            <td></td>
+            <td></td>
+            <td colspan=\"4\"></td>
           </tr>
         </tbody>
       </table>
@@ -127,94 +364,4 @@ refreshTable();
   </html>
 
 <!--
-  <tr>
-            <th scope="row">2</th>
-            <td>Fevrier</td>
-            <td id="turnoverOfFebruaryOfSchool"></td>
-            <td id="turnoverOfFebruaryOfStudio"></td>
-            <td id="turnoverOfFebruaryOfOther"></td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td>Mars</td>
-            <td id="turnoverOfMarchOfSchool"></td>
-            <td id="turnoverOfMarchOfStudio"></td>
-            <td id="turnoverOfMarchOfOther"></td>
-          </tr>
-          <tr>
-            <th scope="row">4</th>
-            <td>Avril</td>
-            <td id="turnoverOfAprilOfSchool"></td>
-            <td id="turnoverOfAprilOfStudio"></td>
-            <td id="turnoverOfAprilOfOther"></td>
-          </tr>
-          <tr>
-            <th scope="row">5</th>
-            <td>Mai</td>
-            <td id="turnoverOfMayOfSchool"></td>
-            <td id="turnoverOfMayOfStudio"></td>
-            <td id="turnoverOfMayOfOther"></td>
-          </tr>
-          <tr>
-            <th scope="row">6</th>
-            <td>Juin</td>
-            <td id="turnoverOfJuneOfSchool"></td>
-            <td id="turnoverOfJuneOfStudio"></td>
-            <td id="turnoverOfJuneOfOther"></td>
-          </tr>
-          <tr>
-            <th scope="row">7</th>
-            <td>Juillet</td>
-            <td id="turnoverOfJuilyOfSchool"></td>
-            <td id="turnoverOfJuilyOfStudio"></td>
-            <td id="turnoverOfJuilyOfOther"></td>
-          </tr>
-          <tr>
-            <th scope="row">8</th>
-            <td>Aôut</td>
-            <td id="turnoverOfAugustOfSchool"></td>
-            <td id="turnoverOfAugustOfStudio"></td>
-            <td id="turnoverOfAugustOfOther"></td>
-          </tr>
-          <tr>
-            <th scope="row">9</th>
-            <td>Septembre</td>
-            <td id="turnoverOfSeptemberOfSchool"></td>
-            <td id="turnoverOfSeptemberOfStudio"></td>
-            <td id="turnoverOfSeptemberOfOther"></td>
-          </tr>
-          <tr>
-            <th scope="row">10</th>
-            <td>Octobre</td>
-            <td id="turnoverOfOctoberOfSchool"></td>
-            <td id="turnoverOfOctoberOfStudio"></td>
-            <td id="turnoverOfOctoberOfOther"></td>
-          </tr>
-          <tr>
-            <th scope="row">11</th>
-            <td>Novembre</td>
-            <td id="turnoverOfNovemberOfSchool"></td>
-            <td id="turnoverOfNovemberOfStudio"></td>
-            <td id="turnoverOfNovemberOfOther"></td>
-          </tr>
-          <tr>
-            <th scope="row">12</th>
-            <td>Decembre</td>
-            <td id="turnoverOfDecemberOfSchool"></td>
-            <td id="turnoverOfDecemberOfStudio"></td>
-            <td id="turnoverOfDecemberOfOther"></td>
-          </tr>
-          <tr>
-            <th scope="row">Total</th>
-            <td>-----------</td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <th scope="row">Total des totaux</th>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td colspan="4"></td>
-          </tr>
+  
