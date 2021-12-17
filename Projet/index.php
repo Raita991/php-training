@@ -69,152 +69,191 @@
 
   <?php
 
-function refreshTable() {
+  $myTable = array();
+  function refreshTableTwo() {
+    $dsn = 'mysql:host=localhost;dbname=ca_poupette';
+    $pdo = new PDO($dsn, 'root','');
+
+    $result = $pdo->query('SELECT
+    monuthOfPrice,
+    SUM(CASE typeOfPrice WHEN 1 THEN price ELSE 0 end) As type_1_sum,
+    SUM(CASE typeOfPrice WHEN 2 THEN price ELSE 0 end) As type_2_sum
+    From ca_poupette.experimental
+    Group by monuthOfPrice');
+
+    foreach ($result as $number) {
+        var_dump($number);
+        $priceSco = $number['type_1_sum'];
+        $priceStu = $number['type_2_sum'];
+
+        for ($i=0; $i<$number['monuthOfPrice']; $i++) {
+          echo " Pour le mois de $i, en scolaire il y a eu $priceSco et $priceStu en studio.<br>";
+          $i++;
+        }
+           
+      
+    };
+  }
+
+  
+
+  refreshTableTwo();
+/*function refreshTable() {
 
   $dsn = 'mysql:host=localhost;dbname=ca_poupette';
   $pdo = new PDO($dsn, 'root','');
-  foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 1)
-    AND (monuthOfprice = 1)', PDO::FETCH_ASSOC) as $number) {
+
+
+  $result = $pdo->query('SELECT SUM(price) AS amount FROM turnover WHERE (typeOfPrice = 1) AND (monthOfprice = 1)', PDO::FETCH_ASSOC);
+  $row = $result->fetch();
+  var_dump($row['amount']);
+
+
+
+
+  foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 1)
+    AND (monthOfprice = 1)', PDO::FETCH_ASSOC) as $number) {
     $priceJanSco = $number['SUM(price)'];
+    
     }
-  foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 2)
-  AND (monuthOfprice = 1)', PDO::FETCH_ASSOC) as $number) {
+  foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 2)
+  AND (monthOfprice = 1)', PDO::FETCH_ASSOC) as $number) {
     $priceJanStu = $number['SUM(price)'];
    }
-   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 3)
-  AND (monuthOfprice = 1)', PDO::FETCH_ASSOC) as $number) {
+   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 3)
+  AND (monthOfprice = 1)', PDO::FETCH_ASSOC) as $number) {
     $priceJanOt = $number['SUM(price)'];
    }
-   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 1)
-  AND (monuthOfprice = 2)', PDO::FETCH_ASSOC) as $number) {
+   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 1)
+  AND (monthOfprice = 2)', PDO::FETCH_ASSOC) as $number) {
     $priceFebSco = $number['SUM(price)'];
    }
-   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 2)
-  AND (monuthOfprice = 2)', PDO::FETCH_ASSOC) as $number) {
+   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 2)
+  AND (monthOfprice = 2)', PDO::FETCH_ASSOC) as $number) {
     $priceFebStu = $number['SUM(price)'];
    }
-   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 3)
-  AND (monuthOfprice = 2)', PDO::FETCH_ASSOC) as $number) {
+   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 3)
+  AND (monthOfprice = 2)', PDO::FETCH_ASSOC) as $number) {
     $priceFebOt = $number['SUM(price)'];
    }
-   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 1)
-  AND (monuthOfprice = 3)', PDO::FETCH_ASSOC) as $number) {
+   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 1)
+  AND (monthOfprice = 3)', PDO::FETCH_ASSOC) as $number) {
     $priceMarSco = $number['SUM(price)'];
    }
-   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 2)
-  AND (monuthOfprice = 3)', PDO::FETCH_ASSOC) as $number) {
+   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 2)
+  AND (monthOfprice = 3)', PDO::FETCH_ASSOC) as $number) {
     $priceMarStu = $number['SUM(price)'];
    }
-   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 3)
-  AND (monuthOfprice = 3)', PDO::FETCH_ASSOC) as $number) {
+   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 3)
+  AND (monthOfprice = 3)', PDO::FETCH_ASSOC) as $number) {
     $priceMarOt = $number['SUM(price)'];
    }
-   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 1)
-  AND (monuthOfprice = 4)', PDO::FETCH_ASSOC) as $number) {
+   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 1)
+  AND (monthOfprice = 4)', PDO::FETCH_ASSOC) as $number) {
     $priceAprSco = $number['SUM(price)'];
    }
-   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 2)
-  AND (monuthOfprice = 4)', PDO::FETCH_ASSOC) as $number) {
+   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 2)
+  AND (monthOfprice = 4)', PDO::FETCH_ASSOC) as $number) {
     $priceAprStu = $number['SUM(price)'];
    }
-   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 3)
-  AND (monuthOfprice = 4)', PDO::FETCH_ASSOC) as $number) {
+   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 3)
+  AND (monthOfprice = 4)', PDO::FETCH_ASSOC) as $number) {
     $priceAprOt = $number['SUM(price)'];
    }
-   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 1)
-  AND (monuthOfprice = 5)', PDO::FETCH_ASSOC) as $number) {
+   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 1)
+  AND (monthOfprice = 5)', PDO::FETCH_ASSOC) as $number) {
     $priceMaySco = $number['SUM(price)'];
    }
-   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 2)
-  AND (monuthOfprice = 5)', PDO::FETCH_ASSOC) as $number) {
+   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 2)
+  AND (monthOfprice = 5)', PDO::FETCH_ASSOC) as $number) {
     $priceMayStu = $number['SUM(price)'];
    }
-   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 3)
-   AND (monuthOfprice = 5)', PDO::FETCH_ASSOC) as $number) {
+   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 3)
+   AND (monthOfprice = 5)', PDO::FETCH_ASSOC) as $number) {
      $priceMayOt = $number['SUM(price)'];
     }
-    foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 1)
-  AND (monuthOfprice = 6)', PDO::FETCH_ASSOC) as $number) {
+    foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 1)
+  AND (monthOfprice = 6)', PDO::FETCH_ASSOC) as $number) {
     $priceJunSco = $number['SUM(price)'];
    }
-   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 2)
-  AND (monuthOfprice = 6)', PDO::FETCH_ASSOC) as $number) {
+   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 2)
+  AND (monthOfprice = 6)', PDO::FETCH_ASSOC) as $number) {
     $priceJunStu = $number['SUM(price)'];
    }
-   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 3)
-  AND (monuthOfprice = 6)', PDO::FETCH_ASSOC) as $number) {
+   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 3)
+  AND (monthOfprice = 6)', PDO::FETCH_ASSOC) as $number) {
     $priceJunOt = $number['SUM(price)'];
    }
-   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 1)
-  AND (monuthOfprice = 7)', PDO::FETCH_ASSOC) as $number) {
+   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 1)
+  AND (monthOfprice = 7)', PDO::FETCH_ASSOC) as $number) {
     $priceJuiSco = $number['SUM(price)'];
    }
-   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 2)
-  AND (monuthOfprice = 7)', PDO::FETCH_ASSOC) as $number) {
+   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 2)
+  AND (monthOfprice = 7)', PDO::FETCH_ASSOC) as $number) {
     $priceJuiStu = $number['SUM(price)'];
    }
-   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 3)
-  AND (monuthOfprice = 7)', PDO::FETCH_ASSOC) as $number) {
+   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 3)
+  AND (monthOfprice = 7)', PDO::FETCH_ASSOC) as $number) {
     $priceJuiOt = $number['SUM(price)'];
    }
-   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 1)
-  AND (monuthOfprice = 8)', PDO::FETCH_ASSOC) as $number) {
+   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 1)
+  AND (monthOfprice = 8)', PDO::FETCH_ASSOC) as $number) {
     $priceAugSco = $number['SUM(price)'];
    }
-   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 2)
-  AND (monuthOfprice = 8)', PDO::FETCH_ASSOC) as $number) {
+   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 2)
+  AND (monthOfprice = 8)', PDO::FETCH_ASSOC) as $number) {
     $priceAugStu = $number['SUM(price)'];
    }
-   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 3)
-  AND (monuthOfprice = 8)', PDO::FETCH_ASSOC) as $number) {
+   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 3)
+  AND (monthOfprice = 8)', PDO::FETCH_ASSOC) as $number) {
     $priceAugOt = $number['SUM(price)'];
    }
-   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 1)
-  AND (monuthOfprice = 9)', PDO::FETCH_ASSOC) as $number) {
+   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 1)
+  AND (monthOfprice = 9)', PDO::FETCH_ASSOC) as $number) {
     $priceSepSco = $number['SUM(price)'];
    }
-   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 2)
-  AND (monuthOfprice = 9)', PDO::FETCH_ASSOC) as $number) {
+   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 2)
+  AND (monthOfprice = 9)', PDO::FETCH_ASSOC) as $number) {
     $priceSepStu = $number['SUM(price)'];
    }
-   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 3)
-  AND (monuthOfprice = 9)', PDO::FETCH_ASSOC) as $number) {
+   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 3)
+  AND (monthOfprice = 9)', PDO::FETCH_ASSOC) as $number) {
     $priceSepOt = $number['SUM(price)'];
    }
-   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 1)
-  AND (monuthOfprice = 10)', PDO::FETCH_ASSOC) as $number) {
+   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 1)
+  AND (monthOfprice = 10)', PDO::FETCH_ASSOC) as $number) {
     $priceOctSco = $number['SUM(price)'];
    }
-   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 2)
-  AND (monuthOfprice = 10)', PDO::FETCH_ASSOC) as $number) {
+   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 2)
+  AND (monthOfprice = 10)', PDO::FETCH_ASSOC) as $number) {
     $priceOctStu = $number['SUM(price)'];
    }
-   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 3)
-  AND (monuthOfprice = 10)', PDO::FETCH_ASSOC) as $number) {
+   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 3)
+  AND (monthOfprice = 10)', PDO::FETCH_ASSOC) as $number) {
     $priceOctOt = $number['SUM(price)'];
    }
-   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 1)
-  AND (monuthOfprice = 11)', PDO::FETCH_ASSOC) as $number) {
+   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 1)
+  AND (monthOfprice = 11)', PDO::FETCH_ASSOC) as $number) {
     $priceNovSco = $number['SUM(price)'];
    }
-   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 2)
-  AND (monuthOfprice = 11)', PDO::FETCH_ASSOC) as $number) {
+   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 2)
+  AND (monthOfprice = 11)', PDO::FETCH_ASSOC) as $number) {
     $priceNovStu = $number['SUM(price)'];
    }
-   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 3)
-  AND (monuthOfprice = 11)', PDO::FETCH_ASSOC) as $number) {
+   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 3)
+  AND (monthOfprice = 11)', PDO::FETCH_ASSOC) as $number) {
     $priceNovOt = $number['SUM(price)'];
    }
-   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 1)
-  AND (monuthOfprice = 12)', PDO::FETCH_ASSOC) as $number) {
+   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 1)
+  AND (monthOfprice = 12)', PDO::FETCH_ASSOC) as $number) {
     $priceDecSco = $number['SUM(price)'];
    }
-   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 2)
-  AND (monuthOfprice = 12)', PDO::FETCH_ASSOC) as $number) {
+   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 2)
+  AND (monthOfprice = 12)', PDO::FETCH_ASSOC) as $number) {
     $priceDecStu = $number['SUM(price)'];
    }
-   foreach ($pdo->query('SELECT SUM(price) FROM experimental WHERE (typeOfPrice = 3)
-  AND (monuthOfprice = 12)', PDO::FETCH_ASSOC) as $number) {
+   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 3)
+  AND (monthOfprice = 12)', PDO::FETCH_ASSOC) as $number) {
     $priceDecOt = $number['SUM(price)'];
    }
    $totalOfSco = $priceJanSco + $priceFebSco + $priceMarSco + $priceAprSco + $priceMaySco + $priceJunSco + $priceJuiSco + $priceAugSco
@@ -349,19 +388,13 @@ function refreshTable() {
       </div>
   </div>
 </div>
-    ";
 
     
-}
-refreshTable();
+}*/
+
 
 
 
 ?>
-
-  <script src="script.js"></script>
-  </body>
-  </html>
-
-<!--
-  
+</body>
+</html>
