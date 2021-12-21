@@ -40,12 +40,12 @@ function sendToDatabase() {
     $dsn = 'mysql:host=localhost;dbname=ca_poupette';
     $pdo = new PDO($dsn, 'root','');
     $montant = $_POST['devise'];
-    $mounth =  $_POST['newMounth'];
+    $month =  $_POST['newMonth'];
     $source = $_POST['newSource'];
-    $statement = $pdo->prepare('INSERT INTO experimental(price, typeOfPrice, monuthOfPrice) VALUES (:montant, :source, :mounth)');
+    $statement = $pdo->prepare('INSERT INTO experimental(price, typeOfPrice, monthOfPrice) VALUES (:montant, :source, :month)');
     $statement->bindParam(':montant', $montant);
     $statement->bindParam(':source', $source);
-    $statement->bindParam(':mounth', $mounth);
+    $statement->bindParam(':month', $month);
 
     if($statement->execute()) {
         echo "Nouveau enregistrement créé avec succès !";

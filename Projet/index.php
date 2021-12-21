@@ -23,12 +23,12 @@
         <h2>Nouvelle(s) entrée(s)</h2>
         </div>
         <div class="input-group mb-3">
-          <select class="form-select" aria-label="Default select example" id="month" name="newMounth">
+          <select class="form-select" aria-label="Default select example" id="mounth" name="newMonth">
             <option selected>Selectionner le mois</option>
             <option value="1">Janvier</option>
-            <option value="2">Fevrier</option>
+            <option value="2">Fevier</option>
             <option value="3">Mars</option>
-            <option value="4">Avril</option>
+            <option value=4">Avril</option>
             <option value="5">Mai</option>
             <option value="6">Juin</option>
             <option value="7">Juillet</option>
@@ -69,332 +69,103 @@
 
   <?php
 
-  $myTable = array();
+  
   function refreshTableTwo() {
     $dsn = 'mysql:host=localhost;dbname=ca_poupette';
     $pdo = new PDO($dsn, 'root','');
 
     $result = $pdo->query('SELECT
-    monuthOfPrice,
-    SUM(CASE typeOfPrice WHEN 1 THEN price ELSE 0 end) As type_1_sum,
-    SUM(CASE typeOfPrice WHEN 2 THEN price ELSE 0 end) As type_2_sum
-    From ca_poupette.experimental
-    Group by monuthOfPrice');
-
-    foreach ($result as $number) {
-        var_dump($number);
-        $priceSco = $number['type_1_sum'];
-        $priceStu = $number['type_2_sum'];
-
-        for ($i=0; $i<$number['monuthOfPrice']; $i++) {
-          echo " Pour le mois de $i, en scolaire il y a eu $priceSco et $priceStu en studio.<br>";
-          $i++;
-        }
-           
-      
-    };
-  }
-
+      monthOfPrice,
+      SUM(CASE typeOfPrice WHEN 1 THEN price ELSE 0 end) As type_1_sum,
+      SUM(CASE typeOfPrice WHEN 2 THEN price ELSE 0 end) As type_2_sum,
+      SUM(CASE typeOfPrice WHEN 3 THEN price ELSE 0 end) As type_3_sum
+      From ca_poupette.experimental
+      Group by monthOfPrice
+      Order by monthOfPrice', PDO::FETCH_ASSOC); 
+      $monthNames= [
+        1 => "Janvier",
+        2 => "Février",
+        3 => "Mars",
+        4 => "Avril",
+        5 => "Mai",
+        6 => "Juin",
+        7 => "Juillet",
+        8 => "Aôut",
+        9 => "Septembre",
+        10 => "Octobre",
+        11 => "Novembre",
+        12 => "Décembre"
+      ];
+    $totalResult = $pdo->query('SELECT
+    SUM(CASE typeOfPrice WHEN 1 THEN price ELSE 0 end) As type_total1_sum,
+    SUM(CASE typeOfPrice WHEN 2 THEN price ELSE 0 end) As type_total2_sum,
+    SUM(CASE typeOfPrice WHEN 3 THEN price ELSE 0 end) As type_total3_sum
+    FROM ca_poupette.experimental', PDO::FETCH_ASSOC);
+      foreach($totalResult as $numberOne){
+        $totalResultSco = $numberOne['type_total1_sum'];
+        $totalResultStu = $numberOne['type_total2_sum'];
+        $totalResultOther = $numberOne['type_total3_sum'];
+        $finalTotalResult = $totalResultOther + $totalResultSco + $totalResultStu;
+      };
+      echo
+      "
+      <table class='table' style ='margin-top: 5%'>
+        <thead>
+          <tr>
+            <th scope='col'>#</th>
+            <th scope='col' style='width: 24%'>Mois</th>
+            <th scope='col' style='width: 24%'>CA scolaire</th>
+            <th scope='col' style='width: 24%'>CA Studio</th>
+            <th scope='col' style='width: 24%'>Autres</th>
+          </tr>
+         </thead> 
+      </table>
+      ";
+        foreach($result as $number) {
+          $monthValue = $monthNames[$number['monthOfPrice']];
+          $priceSco = $number['type_1_sum'];
+          $priceStu = $number['type_2_sum'];
+          $priceOther = $number['type_3_sum'];
+          echo
+          "
+          <table class='table table-pink table-striped'>
+            <tbody>
+              <tr>
+                <th scope='row'></th>
+                <td style ='width: 24%'>$monthValue</td>
+                <td style ='width: 24%'>$priceSco.€</td>
+                <td style ='width: 24%'>$priceStu.€</td>
+                <td style ='width: 24%'>$priceOther.€</td>
+              </tr>
+            </tbody>
+          </table>
+          ";
+        };
+      echo
+      "
+      <table class='table table-pink table-striped'>
+      <tr>
+        <th scope='row'></th>
+        <td style ='width: 24%'>Totaux</td>
+        <td style ='width: 24%'>$totalResultSco.€</td>
+        <td style ='width: 24%'>$totalResultStu.€</td>
+        <td style ='width: 24%'>$totalResultOther.€</td>
+      </tr>
+      </table>
+      <table class='table'>
+      <tr>
+        <th scope='row'></th>
+        <td style ='width: 24%'><b>Total des totaux</b></td>
+        <td style ='width: 24%'></td>
+        <td style ='width: 24%'><b>$finalTotalResult.€</b></td>
+        <td style ='width: 24%'></td>
+      </tr>
+      </table>
+      ";
+}
   
 
   refreshTableTwo();
-/*function refreshTable() {
-
-  $dsn = 'mysql:host=localhost;dbname=ca_poupette';
-  $pdo = new PDO($dsn, 'root','');
-
-
-  $result = $pdo->query('SELECT SUM(price) AS amount FROM turnover WHERE (typeOfPrice = 1) AND (monthOfprice = 1)', PDO::FETCH_ASSOC);
-  $row = $result->fetch();
-  var_dump($row['amount']);
-
-
-
-
-  foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 1)
-    AND (monthOfprice = 1)', PDO::FETCH_ASSOC) as $number) {
-    $priceJanSco = $number['SUM(price)'];
-    
-    }
-  foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 2)
-  AND (monthOfprice = 1)', PDO::FETCH_ASSOC) as $number) {
-    $priceJanStu = $number['SUM(price)'];
-   }
-   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 3)
-  AND (monthOfprice = 1)', PDO::FETCH_ASSOC) as $number) {
-    $priceJanOt = $number['SUM(price)'];
-   }
-   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 1)
-  AND (monthOfprice = 2)', PDO::FETCH_ASSOC) as $number) {
-    $priceFebSco = $number['SUM(price)'];
-   }
-   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 2)
-  AND (monthOfprice = 2)', PDO::FETCH_ASSOC) as $number) {
-    $priceFebStu = $number['SUM(price)'];
-   }
-   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 3)
-  AND (monthOfprice = 2)', PDO::FETCH_ASSOC) as $number) {
-    $priceFebOt = $number['SUM(price)'];
-   }
-   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 1)
-  AND (monthOfprice = 3)', PDO::FETCH_ASSOC) as $number) {
-    $priceMarSco = $number['SUM(price)'];
-   }
-   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 2)
-  AND (monthOfprice = 3)', PDO::FETCH_ASSOC) as $number) {
-    $priceMarStu = $number['SUM(price)'];
-   }
-   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 3)
-  AND (monthOfprice = 3)', PDO::FETCH_ASSOC) as $number) {
-    $priceMarOt = $number['SUM(price)'];
-   }
-   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 1)
-  AND (monthOfprice = 4)', PDO::FETCH_ASSOC) as $number) {
-    $priceAprSco = $number['SUM(price)'];
-   }
-   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 2)
-  AND (monthOfprice = 4)', PDO::FETCH_ASSOC) as $number) {
-    $priceAprStu = $number['SUM(price)'];
-   }
-   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 3)
-  AND (monthOfprice = 4)', PDO::FETCH_ASSOC) as $number) {
-    $priceAprOt = $number['SUM(price)'];
-   }
-   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 1)
-  AND (monthOfprice = 5)', PDO::FETCH_ASSOC) as $number) {
-    $priceMaySco = $number['SUM(price)'];
-   }
-   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 2)
-  AND (monthOfprice = 5)', PDO::FETCH_ASSOC) as $number) {
-    $priceMayStu = $number['SUM(price)'];
-   }
-   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 3)
-   AND (monthOfprice = 5)', PDO::FETCH_ASSOC) as $number) {
-     $priceMayOt = $number['SUM(price)'];
-    }
-    foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 1)
-  AND (monthOfprice = 6)', PDO::FETCH_ASSOC) as $number) {
-    $priceJunSco = $number['SUM(price)'];
-   }
-   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 2)
-  AND (monthOfprice = 6)', PDO::FETCH_ASSOC) as $number) {
-    $priceJunStu = $number['SUM(price)'];
-   }
-   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 3)
-  AND (monthOfprice = 6)', PDO::FETCH_ASSOC) as $number) {
-    $priceJunOt = $number['SUM(price)'];
-   }
-   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 1)
-  AND (monthOfprice = 7)', PDO::FETCH_ASSOC) as $number) {
-    $priceJuiSco = $number['SUM(price)'];
-   }
-   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 2)
-  AND (monthOfprice = 7)', PDO::FETCH_ASSOC) as $number) {
-    $priceJuiStu = $number['SUM(price)'];
-   }
-   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 3)
-  AND (monthOfprice = 7)', PDO::FETCH_ASSOC) as $number) {
-    $priceJuiOt = $number['SUM(price)'];
-   }
-   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 1)
-  AND (monthOfprice = 8)', PDO::FETCH_ASSOC) as $number) {
-    $priceAugSco = $number['SUM(price)'];
-   }
-   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 2)
-  AND (monthOfprice = 8)', PDO::FETCH_ASSOC) as $number) {
-    $priceAugStu = $number['SUM(price)'];
-   }
-   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 3)
-  AND (monthOfprice = 8)', PDO::FETCH_ASSOC) as $number) {
-    $priceAugOt = $number['SUM(price)'];
-   }
-   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 1)
-  AND (monthOfprice = 9)', PDO::FETCH_ASSOC) as $number) {
-    $priceSepSco = $number['SUM(price)'];
-   }
-   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 2)
-  AND (monthOfprice = 9)', PDO::FETCH_ASSOC) as $number) {
-    $priceSepStu = $number['SUM(price)'];
-   }
-   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 3)
-  AND (monthOfprice = 9)', PDO::FETCH_ASSOC) as $number) {
-    $priceSepOt = $number['SUM(price)'];
-   }
-   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 1)
-  AND (monthOfprice = 10)', PDO::FETCH_ASSOC) as $number) {
-    $priceOctSco = $number['SUM(price)'];
-   }
-   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 2)
-  AND (monthOfprice = 10)', PDO::FETCH_ASSOC) as $number) {
-    $priceOctStu = $number['SUM(price)'];
-   }
-   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 3)
-  AND (monthOfprice = 10)', PDO::FETCH_ASSOC) as $number) {
-    $priceOctOt = $number['SUM(price)'];
-   }
-   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 1)
-  AND (monthOfprice = 11)', PDO::FETCH_ASSOC) as $number) {
-    $priceNovSco = $number['SUM(price)'];
-   }
-   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 2)
-  AND (monthOfprice = 11)', PDO::FETCH_ASSOC) as $number) {
-    $priceNovStu = $number['SUM(price)'];
-   }
-   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 3)
-  AND (monthOfprice = 11)', PDO::FETCH_ASSOC) as $number) {
-    $priceNovOt = $number['SUM(price)'];
-   }
-   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 1)
-  AND (monthOfprice = 12)', PDO::FETCH_ASSOC) as $number) {
-    $priceDecSco = $number['SUM(price)'];
-   }
-   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 2)
-  AND (monthOfprice = 12)', PDO::FETCH_ASSOC) as $number) {
-    $priceDecStu = $number['SUM(price)'];
-   }
-   foreach ($pdo->query('SELECT SUM(price) FROM turnover WHERE (typeOfPrice = 3)
-  AND (monthOfprice = 12)', PDO::FETCH_ASSOC) as $number) {
-    $priceDecOt = $number['SUM(price)'];
-   }
-   $totalOfSco = $priceJanSco + $priceFebSco + $priceMarSco + $priceAprSco + $priceMaySco + $priceJunSco + $priceJuiSco + $priceAugSco
-   + $priceSepSco + $priceOctSco + $priceNovSco + $priceDecSco;
-
-   $totalOfStu = $priceJanStu + $priceFebStu + $priceMarStu + $priceAprStu + $priceMayStu + $priceJunStu + $priceJuiStu + $priceAugStu
-   + $priceSepStu + $priceOctStu + $priceNovStu + $priceDecStu;
-
-   $totalOfOt = $priceJanOt + $priceFebOt + $priceMarOt + $priceAprOt + $priceMayOt + $priceJunOt + $priceJuiOt + $priceAugOt
-   + $priceSepOt + $priceOctOt + $priceNovOt + $priceDecOt;
-
-   $OneForAll = $totalOfStu + $totalOfSco + $totalOfOt;
-    echo"
-    <div class=\"row content\">
-    
-    <div class=\"title pink\">
-    
-      <h2>Récapitulatif de l'année</h2>
-    </div>
-    <div class=\"summary\">
-      <table class=\"table\" id=\"myTable\">
-        <thead>
-          <tr>
-            <th scope=\"col\">#</th>
-            <th scope=\"col\">Mois</th>
-            <th scope=\"col\">CA scolaire</th>
-            <th scope=\"col\">CA Studio</th>
-            <th scope=\"col\">Autres</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope=\"row\">1</th>
-            <td>Janvier</td>
-            <td id=\"turnoverOfJanuaryOfSchool\">$priceJanSco.€</td>
-            <td id=\"turnoverOfJanuaryOfStudio\">$priceJanStu.€</td>
-            <td id=\"turnoverOfJanuaryOfOther\">$priceJanOt.€</td>
-          </tr>
-          <tr>
-            <th scope=\"row\">2</th>
-            <td>Fevrier</td>
-            <td id=\"turnoverOfFebruaryOfSchool\">$priceFebSco.€</td>
-            <td id=\"turnoverOfFebruaryOfStudio\">$priceFebStu.€</td>
-            <td id=\"turnoverOfFebruaryOfOther\">$priceFebOt.€</td>
-          </tr>
-          <tr>
-            <th scope=\"row\">3</th>
-            <td>Mars</td>
-            <td id=\"turnoverOfMarchOfSchool\">$priceMarSco.€</td>
-            <td id=\"turnoverOfMarchOfStudio\">$priceMarStu.€</td>
-            <td id=\"turnoverOfMarchOfOther\">$priceMarOt.€</td>
-          </tr>
-          <tr>
-            <th scope=\"row\">4</th>
-            <td>Avril</td>
-            <td id=\"turnoverOfAprilOfSchool\">$priceAprSco.€</td>
-            <td id=\"turnoverOfAprilOfStudio\">$priceAprStu.€</td>
-            <td id=\"turnoverOfAprilOfOther\">$priceAprOt.€</td>
-          </tr>
-          <tr>
-            <th scope=\"row\">5</th>
-            <td>Mai</td>
-            <td id=\"turnoverOfMayOfSchool\">$priceMaySco.€</td>
-            <td id=\"turnoverOfMayOfStudio\">$priceMayStu.€</td>
-            <td id=\"turnoverOfMayOfOther\">$priceMayOt.€</td>
-          </tr>
-          <tr>
-            <th scope=\"row\">6</th>
-            <td>Juin</td>
-            <td id=\"turnoverOfJuneOfSchool\">$priceJunSco.€</td>
-            <td id=\"turnoverOfJuneOfStudio\">$priceJunStu.€</td>
-            <td id=\"turnoverOfJuneOfOther\">$priceJunOt.€</td>
-          </tr>
-          <tr>
-            <th scope=\"row\">7</th>
-            <td>Juillet</td>
-            <td id=\"turnoverOfJuilyOfSchool\">$priceJuiSco.€</td>
-            <td id=\"turnoverOfJuilyOfStudio\">$priceJuiStu.€</td>
-            <td id=\"turnoverOfJuilyOfOther\">$priceJuiOt.€</td>
-          </tr>
-          <tr>
-            <th scope=\"row\">8</th>
-            <td>Aôut</td>
-            <td id=\"turnoverOfAugustOfSchool\">$priceAugSco.€</td>
-            <td id=\"turnoverOfAugustOfStudio\">$priceAugStu.€</td>
-            <td id=\"turnoverOfAugustOfOther\">$priceAugOt.€</td>
-          </tr>
-          <tr>
-            <th scope=\"row\">9</th>
-            <td>Septembre</td>
-            <td id=\"turnoverOfSeptemberOfSchool\">$priceSepSco.€</td>
-            <td id=\"turnoverOfSeptemberOfStudio\">$priceSepStu.€</td>
-            <td id=\"turnoverOfSeptemberOfOther\">$priceSepOt.€</td>
-          </tr>
-          <tr>
-            <th scope=\"row\">10</th>
-            <td>Octobre</td>
-            <td id=\"turnoverOfOctoberOfSchool\">$priceOctSco.€</td>
-            <td id=\"turnoverOfOctoberOfStudio\">$priceOctStu.€</td>
-            <td id=\"turnoverOfOctoberOfOther\">$priceOctOt.€</td>
-          </tr>
-          <tr>
-            <th scope=\"row\">11</th>
-            <td>Novembre</td>
-            <td id=\"turnoverOfNovemberOfSchool\">$priceNovSco.€</td>
-            <td id=\"turnoverOfNovemberOfStudio\">$priceNovStu.€</td>
-            <td id=\"turnoverOfNovemberOfOther\">$priceNovOt.€</td>
-          </tr>
-          <tr>
-            <th scope=\"row\">12</th>
-            <td>Decembre</td>
-            <td id=\"turnoverOfDecemberOfSchool\">$priceDecSco.€</td>
-            <td id=\"turnoverOfDecemberOfStudio\">$priceDecStu.€</td>
-            <td id=\"turnoverOfDecemberOfOther\">$priceDecOt.€</td>
-          </tr>
-          <tr>
-            <th scope=\"row\">Total</th>
-            <td>-----------</td>
-            <td>$totalOfSco.€</td>
-            <td>$totalOfStu.€</td>
-            <td>$totalOfOt.€</td>
-          </tr>
-          <tr>
-            <th scope=\"row\">Total des totaux</th>
-            <td>$OneForAll.€</td>
-            <td></td>
-            <td></td>
-            <td colspan=\"4\"></td>
-          </tr>
-        </tbody>
-      </table>
-      </div>
-  </div>
-</div>
-
-    
-}*/
-
-
-
-
 ?>
 </body>
 </html>

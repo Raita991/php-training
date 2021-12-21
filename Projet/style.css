@@ -32,9 +32,6 @@ h2 {
     color: white;
 }
 
-.content1 {
-    height: 35vh;
-}
 
 .pink {
     background-color: pink;
@@ -45,6 +42,11 @@ h2 {
     margin: auto;
     justify-content: space-around;
 }
+
+.input-group {
+    margin-top: 3%;
+}
+
 .summary {
     width: 100%;
 }
@@ -55,7 +57,6 @@ h2 {
     margin-bottom: 1%;
     justify-content: center;
 }
-
 
 @media (max-width: 800px) {
     #imagel {
