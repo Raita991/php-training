@@ -58,6 +58,22 @@ h2 {
     justify-content: center;
 }
 
+
+.accordion-flush {
+    border-color: rgb(221, 32, 64);
+    background-color: rgb(221, 32, 64);
+}
+
+.accordion-transition {
+    border-color: rgb(221, 32, 64);
+    background-color: rgb(221, 32, 64);
+}
+
+.collapsed {
+    border-color: rgb(221, 32, 64);
+    background-color: rgb(221, 32, 64);
+}
+
 @media (max-width: 800px) {
     #imagel {
         display: none;

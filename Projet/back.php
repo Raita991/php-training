@@ -54,17 +54,5 @@ function sendToDatabase() {
     } 
 }
 
-/*
-function dataRecovery() {
-    $dsn = 'mysql:host=localhost;dbname=ca_poupette';
-    $pdo = new PDO($dsn, 'root','');
-    foreach ($pdo->query('SELECT price FROM experimental', PDO::FETCH_ASSOC) as $number) {
-        $price = $number['price'];
-        echo "<td id=\"turnoverOfMarchOfStudio\">$price</td>";
-    }
-}
-
-*/
-
 ?>
 
