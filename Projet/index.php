@@ -7,14 +7,16 @@
   <title>Index</title>
   <link rel="stylesheet" href="bootstrap.min.css">
   <!-- JavaScript Bundle with Popper -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="container">
     <div class="row justify-content-md-center header">
-      <!--img src="bandeau-expertise-comptable-groupe2B-1024x272.jpg" alt="bandeau" class="img-fluid" id="imagel"-->
-      <!--img src="aaci-expertise-comptable-bandeau-2.jpg" alt="bandeau2" class="img-fluid" id="images"-->
+      <img src="bandeau" alt="bandeau" class="img" id="imagel">
+      <img src="aaci-expertise-comptable-bandeau-2.jpg" alt="bandeau2" class="img-fluid" id="images">
+    </div>
+    <div class="row justify-content-md-center">  
       <div class="title">
         <h1>Suivi du chiffre d'affaire</h1>
       </div>
@@ -56,12 +58,6 @@
             <input type="number" name="devise" class="form-control" id="amount" step=".01">
             <span class="input-group-text">€</span>
           </div>
-          <!--<label for="new number" class="form-label" name="title">Chiffre du mois en cours</label>
-          <div class="input-group mb-3">
-          <input type="text" class="form-control" id="exampleFormControlInput1" id="monthSelect">
-          <span class="input-group-text">€</span>
-          </div>
-        </div>-->
       </div>
       <div class="d-grid">
         <button class="btn btn-danger" type="submit" id="button">Envoyer</button>
@@ -213,12 +209,12 @@
               $output = array();
               
 
-              $resultDelete = $pdo->query('SELECT price, id
+              $resultDelete = $pdo->query('SELECT price, id, typeOfPrice
               FROM experimental
               ORDER BY id DESC
               LIMIT 5', PDO::FETCH_ASSOC);
               foreach($resultDelete as $deleted) {
-                $toTable = ['price' => $deleted['price'], 'id' => $deleted['id']];
+                $toTable = ['price' => $deleted['price'], 'id' => $deleted['id'], 'typeOfPrice' => $deleted['typeOfPrice']];
                 array_push($output, $toTable);
               }
               return $output;
@@ -234,18 +230,30 @@
             $myTablePrice3 = $myTable[2]['price'];
             $myTablePrice4 = $myTable[3]['price'];
             $myTablePrice5 = $myTable[4]['price'];
+            $myTableTypeOfPrice1 = $myTable[0]['typeOfPrice'];
+            $myTableTypeOfPrice2 = $myTable[1]['typeOfPrice'];
+            $myTableTypeOfPrice3 = $myTable[2]['typeOfPrice'];
+            $myTableTypeOfPrice4 = $myTable[3]['typeOfPrice'];
+            $myTableTypeOfPrice5 = $myTable[4]['typeOfPrice'];
+            $myTableTypeOfPriceGeneral = [
+              1 => 'Scolaire',
+              2 => 'Studio',
+              3 => 'Mariage',
+              4 => 'Identité',
+              5 => 'Autres'
+            ];
             echo"
               <form action=\"delete.php\" method=\"POST\">
                 <select class=\"form-select\" aria-label=\"Default select example\" id=\"delete\" name=\"falseData\">
                   <option selected>Quel montant à supprimer</option>
-                  <option value=\"$myTableId1\">$myTablePrice1</option>
-                  <option value=\"$myTableId2\">$myTablePrice2</option>
-                  <option value=\"$myTableId3\">$myTablePrice3</option>
-                  <option value=\"$myTableId4\">$myTablePrice4</option>
-                  <option value=\"$myTableId5\">$myTablePrice5</option>
+                  <option value=\"$myTableId1\">$myTablePrice1.€  $myTableTypeOfPriceGeneral[$myTableTypeOfPrice1]</option>
+                  <option value=\"$myTableId2\">$myTablePrice2.€  $myTableTypeOfPriceGeneral[$myTableTypeOfPrice2]</option>
+                  <option value=\"$myTableId3\">$myTablePrice3.€  $myTableTypeOfPriceGeneral[$myTableTypeOfPrice3]</option>
+                  <option value=\"$myTableId4\">$myTablePrice4.€  $myTableTypeOfPriceGeneral[$myTableTypeOfPrice4]</option>
+                  <option value=\"$myTableId5\">$myTablePrice5.€  $myTableTypeOfPriceGeneral[$myTableTypeOfPrice5]</option>
                 </select>
                 <div class=\"d-grid\">
-                  <button class=\"btn btn-danger\" type=\"submit\" id=\"buton\">Envoyer</button>
+                  <button class=\"btn btn-danger marge\" type=\"submit\" id=\"buton\">Envoyer</button>
                 </div>
               </form>
             ";
@@ -262,7 +270,66 @@
         </h2>
         <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
           <div class="accordion-body">
-            
+            <?php
+              function history() {
+                $dsn = 'mysql:host=localhost;dbname=ca_poupette';
+                $pdo = new PDO($dsn, 'root','');
+                $monthNames= [
+                  1 => "Janvier",
+                  2 => "Février",
+                  3 => "Mars",
+                  4 => "Avril",
+                  5 => "Mai",
+                  6 => "Juin",
+                  7 => "Juillet",
+                  8 => "Aôut",
+                  9 => "Septembre",
+                  10 => "Octobre",
+                  11 => "Novembre",
+                  12 => "Décembre"
+                ];
+                $typeNames = [
+                  1 => "Scolaire",
+                  2 => "Studio",
+                  3 => "Mariage",
+                  4 => "Identité",
+                  5 => "Autres"              
+                ];
+                $i = 1;
+                $result = $pdo -> query('SELECT * FROM experimental ORDER BY id DESC LIMIT 5', PDO::FETCH_ASSOC);
+                echo"
+                    <table class=\"table table-dark table-striped\">
+                    <tr>
+                      <td scope=\"col\">#</th>
+                      <td scope=\"col\">Prix</th>
+                      <td scope=\"col\">Mois</th>
+                      <td scope=\"col\">Type</th>
+                    <tr>
+                    </table>
+                  ";
+                foreach($result as $history) {
+                  $monthValue = $monthNames[$history['monthOfPrice']];
+                  $priceValue = $history['price'];
+                  $typeValue = $typeNames[$history['typeOfPrice']];
+                  echo"
+                  <table class='table table-pink table-striped'>
+                  <tbody>
+                    <tr>
+                      <th scope='row'></th>
+                      <td style ='width: 13%'><b>$i</b></td>
+                      <td style ='width: 26%'>$priceValue.€</td>
+                      <td style ='width: 30%'>$monthValue</td>
+                      <td style ='width: 30%'>$typeValue</td>
+                    </tr0
+                  </tbody>
+                </table>
+                  ";
+                  $i ++;
+                }
+
+              } 
+              history();
+            ?>
           </div>
         </div>
       </div>
