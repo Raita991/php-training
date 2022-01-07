@@ -9,11 +9,6 @@ body {
     margin-top: 1%;
 }
 
-.img-fluid {
-    z-index: 1;
-    position: absolute;
-}
-
 .title {
     display: flex;
     justify-content: center;

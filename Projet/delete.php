@@ -23,7 +23,7 @@
         $dsn = 'mysql:host=localhost;dbname=ca_poupette';
         $pdo = new PDO($dsn, 'root','');
         $id = $_POST['falseData'];
-        $statement = $pdo ->prepare('DELETE FROM experimental WHERE id = :id');
+        $statement = $pdo ->prepare('DELETE FROM turnover WHERE id = :id');
         $statement->bindParam(':id', $id);
     
         if($statement->execute()) {

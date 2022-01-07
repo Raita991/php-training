@@ -87,7 +87,7 @@
                 SUM(CASE typeOfPrice WHEN 3 THEN price ELSE 0 end) As type_3_sum,
                 SUM(CASE typeOfPrice WHEN 4 THEN price ELSE 0 end) As type_4_sum,
                 SUM(CASE typeOfPrice WHEN 5 THEN price ELSE 0 end) As type_5_sum
-                From ca_poupette.experimental
+                From ca_poupette.turnover
                 Group by monthOfPrice
                 Order by monthOfPrice', PDO::FETCH_ASSOC); 
                 $monthNames= [
@@ -110,7 +110,7 @@
               SUM(CASE typeOfPrice WHEN 3 THEN price ELSE 0 end) As type_total3_sum,
               SUM(CASE typeOfPrice WHEN 4 THEN price ELSE 0 end) As type_total4_sum,
               SUM(CASE typeOfPrice WHEN 5 THEN price ELSE 0 end) As type_total5_sum
-              FROM ca_poupette.experimental', PDO::FETCH_ASSOC);
+              FROM ca_poupette.turnover', PDO::FETCH_ASSOC);
                 foreach($totalResult as $numberOne){
                   $totalResultSco = $numberOne['type_total1_sum'];
                   $totalResultStu = $numberOne['type_total2_sum'];
@@ -210,7 +210,7 @@
               
 
               $resultDelete = $pdo->query('SELECT price, id, typeOfPrice
-              FROM experimental
+              FROM turnover
               ORDER BY id DESC
               LIMIT 5', PDO::FETCH_ASSOC);
               foreach($resultDelete as $deleted) {
@@ -296,7 +296,7 @@
                   5 => "Autres"              
                 ];
                 $i = 1;
-                $result = $pdo -> query('SELECT * FROM experimental ORDER BY id DESC LIMIT 5', PDO::FETCH_ASSOC);
+                $result = $pdo -> query('SELECT * FROM turnover ORDER BY id DESC LIMIT 5', PDO::FETCH_ASSOC);
                 echo"
                     <table class=\"table table-dark table-striped\">
                     <tr>
