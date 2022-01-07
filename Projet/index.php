@@ -17,14 +17,15 @@
       <img src="aaci-expertise-comptable-bandeau-2.jpg" alt="bandeau2" class="img-fluid" id="images">
     </div>
     <div class="row justify-content-md-center">  
-      <div class="title">
+      <div class="title"> <!-- Saisie des données -->
         <h1>Suivi du chiffre d'affaire</h1>
       </div>
     </div>
-    <form method="POST" action="back.php">
+    <!-- formulaire envoyé a back.php -->
+    <form method="POST" action="back.php"> 
       <div class="row content1">
         <div class="title pink">
-        <h2>Nouvelle(s) entrée(s)</h2>
+          <h2>Nouvelle(s) entrée(s)</h2>
         </div>
         <div class="input-group mb-3">
           <select class="form-select" aria-label="Default select example" id="mounth" name="newMonth">
@@ -58,12 +59,14 @@
             <input type="number" name="devise" class="form-control" id="amount" step=".01">
             <span class="input-group-text">€</span>
           </div>
-      </div>
-      <div class="d-grid">
-        <button class="btn btn-danger" type="submit" id="button">Envoyer</button>
+        </div>
+        <div class="d-grid">
+          <button class="btn btn-danger" type="submit" id="button">Envoyer</button>
+        </div>
       </div>
     </form>
 
+    <!-- formulaire terminé, interface accordéon -->
     <div class="accordion accordion-flush" id="accordionExample">
       <div class="accordion-item">
         <h2 class="accordion-header" id="headingOne">
@@ -73,14 +76,16 @@
         </h2>
         <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
           <div class="accordion-body">
+          <!-- Premier tableau -->
           <?php
 
   
-            function refreshTableTwo() {
-              $dsn = 'mysql:host=localhost;dbname=ca_poupette';
-              $pdo = new PDO($dsn, 'root','');
+            function refreshTableTwo()
+            {
+                $dsn = 'mysql:host=localhost;dbname=ca_poupette';
+                $pdo = new PDO($dsn, 'root', '');
 
-              $result = $pdo->query('SELECT
+                $result = $pdo->query('SELECT
                 monthOfPrice,
                 SUM(CASE typeOfPrice WHEN 1 THEN price ELSE 0 end) As type_1_sum,
                 SUM(CASE typeOfPrice WHEN 2 THEN price ELSE 0 end) As type_2_sum,
@@ -89,7 +94,7 @@
                 SUM(CASE typeOfPrice WHEN 5 THEN price ELSE 0 end) As type_5_sum
                 From ca_poupette.turnover
                 Group by monthOfPrice
-                Order by monthOfPrice', PDO::FETCH_ASSOC); 
+                Order by monthOfPrice', PDO::FETCH_ASSOC);
                 $monthNames= [
                   1 => "Janvier",
                   2 => "Février",
@@ -104,20 +109,21 @@
                   11 => "Novembre",
                   12 => "Décembre"
                 ];
-              $totalResult = $pdo->query('SELECT
+                $totalResult = $pdo->query('SELECT
               SUM(CASE typeOfPrice WHEN 1 THEN price ELSE 0 end) As type_total1_sum,
               SUM(CASE typeOfPrice WHEN 2 THEN price ELSE 0 end) As type_total2_sum,
               SUM(CASE typeOfPrice WHEN 3 THEN price ELSE 0 end) As type_total3_sum,
               SUM(CASE typeOfPrice WHEN 4 THEN price ELSE 0 end) As type_total4_sum,
               SUM(CASE typeOfPrice WHEN 5 THEN price ELSE 0 end) As type_total5_sum
               FROM ca_poupette.turnover', PDO::FETCH_ASSOC);
-                foreach($totalResult as $numberOne){
-                  $totalResultSco = $numberOne['type_total1_sum'];
-                  $totalResultStu = $numberOne['type_total2_sum'];
-                  $totalResultMarriage = $numberOne['type_total3_sum'];
-                  $totalResultIdentity = $numberOne['type_total4_sum'];
-                  $totalResultOther = $numberOne['type_total5_sum'];
-                  $finalTotalResult = $totalResultOther + $totalResultSco + $totalResultStu + $totalResultIdentity + $totalResultMarriage;
+
+                foreach ($totalResult as $numberOne) { /*les différents totaux */
+                    $totalResultSco = $numberOne['type_total1_sum'];
+                    $totalResultStu = $numberOne['type_total2_sum'];
+                    $totalResultMarriage = $numberOne['type_total3_sum'];
+                    $totalResultIdentity = $numberOne['type_total4_sum'];
+                    $totalResultOther = $numberOne['type_total5_sum'];
+                    $finalTotalResult = $totalResultOther + $totalResultSco + $totalResultStu + $totalResultIdentity + $totalResultMarriage;
                 };
                 echo
                 "
@@ -135,7 +141,8 @@
                   </thead> 
                 </table>
                 ";
-                  foreach($result as $number) {
+
+                foreach ($result as $number) { /* je place les valeurs dans des variables simples sinon le html galère */
                     $monthValue = $monthNames[$number['monthOfPrice']];
                     $priceSco = $number['type_1_sum'];
                     $priceStu = $number['type_2_sum'];
@@ -158,7 +165,7 @@
                       </tbody>
                     </table>
                     ";
-                  };
+                };
                 echo
                 "
                 <table class='table table-pink table-striped'>
@@ -189,9 +196,10 @@
 
             refreshTableTwo();
             ?>
-          </div>
         </div>
       </div>
+    </div>
+      <!-- Menu de suppression -->
       <div class="accordion-item">
         <h2 class="accordion-header" id="headingTwo">
           <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
@@ -200,26 +208,26 @@
         </h2>
         <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
           <div class="accordion-body">
-            <!--Code ici -->
             <?php
 
-            function deleteData () {
-              $dsn = 'mysql:host=localhost;dbname=ca_poupette';
-              $pdo = new PDO($dsn, 'root','');
-              $output = array();
+            function deleteData()
+            {
+                $dsn = 'mysql:host=localhost;dbname=ca_poupette';
+                $pdo = new PDO($dsn, 'root', '');
+                $output = array();
               
 
-              $resultDelete = $pdo->query('SELECT price, id, typeOfPrice
+                $resultDelete = $pdo->query('SELECT price, id, typeOfPrice
               FROM turnover
               ORDER BY id DESC
               LIMIT 5', PDO::FETCH_ASSOC);
-              foreach($resultDelete as $deleted) {
-                $toTable = ['price' => $deleted['price'], 'id' => $deleted['id'], 'typeOfPrice' => $deleted['typeOfPrice']];
-                array_push($output, $toTable);
-              }
-              return $output;
-            }  
-            $myTable = deleteData();
+                foreach ($resultDelete as $deleted) {
+                    $toTable = ['price' => $deleted['price'], 'id' => $deleted['id'], 'typeOfPrice' => $deleted['typeOfPrice']];
+                    array_push($output, $toTable);
+                }
+                return $output;
+            }
+            $myTable = deleteData(); /* idem ici, toujours un souci de compréhension de l'html, je met des variables simples */
             $myTableId1 = $myTable[0]['id'];
             $myTableId2 = $myTable[1]['id'];
             $myTableId3 = $myTable[2]['id'];
@@ -262,6 +270,7 @@
           </div>
         </div>
       </div>
+      <!-- Dernière partie, historique -->
       <div class="accordion-item">
         <h2 class="accordion-header" id="headingThree">
           <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
@@ -271,10 +280,11 @@
         <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
           <div class="accordion-body">
             <?php
-              function history() {
-                $dsn = 'mysql:host=localhost;dbname=ca_poupette';
-                $pdo = new PDO($dsn, 'root','');
-                $monthNames= [
+              function history()
+              {
+                  $dsn = 'mysql:host=localhost;dbname=ca_poupette';
+                  $pdo = new PDO($dsn, 'root', '');
+                  $monthNames= [
                   1 => "Janvier",
                   2 => "Février",
                   3 => "Mars",
@@ -288,16 +298,16 @@
                   11 => "Novembre",
                   12 => "Décembre"
                 ];
-                $typeNames = [
+                  $typeNames = [
                   1 => "Scolaire",
                   2 => "Studio",
                   3 => "Mariage",
                   4 => "Identité",
-                  5 => "Autres"              
+                  5 => "Autres"
                 ];
-                $i = 1;
-                $result = $pdo -> query('SELECT * FROM turnover ORDER BY id DESC LIMIT 5', PDO::FETCH_ASSOC);
-                echo"
+                  $i = 1;
+                  $result = $pdo -> query('SELECT * FROM turnover ORDER BY id DESC LIMIT 5', PDO::FETCH_ASSOC);
+                  echo"
                     <table class=\"table table-dark table-striped\">
                     <tr>
                       <td scope=\"col\">#</th>
@@ -307,11 +317,11 @@
                     <tr>
                     </table>
                   ";
-                foreach($result as $history) {
-                  $monthValue = $monthNames[$history['monthOfPrice']];
-                  $priceValue = $history['price'];
-                  $typeValue = $typeNames[$history['typeOfPrice']];
-                  echo"
+                  foreach ($result as $history) {
+                      $monthValue = $monthNames[$history['monthOfPrice']];
+                      $priceValue = $history['price'];
+                      $typeValue = $typeNames[$history['typeOfPrice']];
+                      echo"
                   <table class='table table-pink table-striped'>
                   <tbody>
                     <tr>
@@ -324,10 +334,9 @@
                   </tbody>
                 </table>
                   ";
-                  $i ++;
-                }
-
-              } 
+                      $i ++;
+                  }
+              }
               history();
             ?>
           </div>
